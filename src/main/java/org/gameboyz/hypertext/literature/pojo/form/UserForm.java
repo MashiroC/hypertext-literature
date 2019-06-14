@@ -1,6 +1,8 @@
 package org.gameboyz.hypertext.literature.pojo.form;
 
 import lombok.Data;
+import org.gameboyz.hypertext.literature.pojo.po.UserPO;
+import org.gameboyz.hypertext.literature.util.EncryptUtil;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,4 +23,10 @@ public class UserForm {
     @Size(max = 20)
     String password;
 
+    public UserPO toUserPO() {
+        UserPO userPO = new UserPO();
+        userPO.setUsername(this.username);
+        userPO.setPassword(EncryptUtil.sha256(this.password));
+        return userPO;
+    }
 }

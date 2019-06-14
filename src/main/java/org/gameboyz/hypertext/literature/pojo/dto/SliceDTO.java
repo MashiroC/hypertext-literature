@@ -1,16 +1,13 @@
-package org.gameboyz.hypertext.literature.pojo.form;
+package org.gameboyz.hypertext.literature.pojo.dto;
 
-import lombok.Data;
+import org.gameboyz.hypertext.literature.pojo.form.Choose;
 
 /**
  * @author: Shiina18
- * @date: 2019/6/4 20:52
+ * @date: 2019/6/5 23:41
  * @description:
  */
-@Data
-public class SliceForm {
-
-    Integer fictionId;
+public class SliceDTO {
 
     String sliceTitle;
     /**

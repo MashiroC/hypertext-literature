@@ -11,6 +11,8 @@ import java.lang.reflect.Field;
 
 public class JwtHelper<T> {
 
+    public static final String H_MAC_SHA256 = "HmacSHA256";
+
     /**
      * 密钥
      */

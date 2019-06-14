@@ -3,7 +3,7 @@ package org.gameboyz.hypertext.literature.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.gameboyz.hypertext.literature.been.ResponseEntity;
 import org.gameboyz.hypertext.literature.execptions.fiction.SliceNotFoundException;
-import org.gameboyz.hypertext.literature.pojo.Content;
+import org.gameboyz.hypertext.literature.pojo.Edge;
 import org.gameboyz.hypertext.literature.pojo.Fiction;
 import org.gameboyz.hypertext.literature.pojo.Slice;
 import org.gameboyz.hypertext.literature.pojo.User;
@@ -27,8 +27,8 @@ public class FictionController {
     @Autowired
     FictionService fictionService;
 
-    @GetMapping("/articles")
-    public ResponseEntity getAllArticle(@RequestAttribute("user") final User user) {
+    @GetMapping("/fictions")
+    public ResponseEntity getAllfiction(@RequestAttribute(value = "user", required = false) User user) {
         if (user != null) {
             log.info("user:[uid:{},nickname:{}]获取了小说信息", user.getUid(), user.getNickname());
         } else {
@@ -38,42 +38,41 @@ public class FictionController {
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/articles/${articleId}")
-    public ResponseEntity getSlice(@RequestAttribute("user") final User user, @PathVariable("articleId") final Integer articleId) {
+    @GetMapping("/fiction/{fictionId}")
+    public ResponseEntity getSlice(@RequestAttribute(value = "user", required = false) final User user, @PathVariable("fictionId") final Integer fictionId) {
         if (user != null) {
-            log.info("user:[uid:{},nickname:{}]获取了小说[{}]的章节信息", user.getUid(), user.getNickname(), articleId);
+            log.info("user:[uid:{},nickname:{}]获取了小说[{}]的章节信息", user.getUid(), user.getNickname(), fictionId);
         } else {
-            log.info("未登录用户获取了小说[{}]信息", articleId);
+            log.info("未登录用户获取了小说[{}]信息", fictionId);
         }
-        Set<Slice> res = fictionService.getFictionSlice(articleId);
+        Set<Edge> res = fictionService.getFictionSlice(fictionId);
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/articles/${articleId}/${sliceId}")
-    public ResponseEntity getOneContent(@PathVariable("articleId") Integer articleId, @PathVariable("sliceId") Integer sliceId, @RequestAttribute("user") User user) throws SliceNotFoundException {
+    @GetMapping("/fiction/{fictionId}/{sliceId}")
+    public ResponseEntity getOneContent(@PathVariable("fictionId") Integer fictionId, @PathVariable("sliceId") Integer sliceId, @RequestAttribute(value = "user", required = false) User user) throws SliceNotFoundException {
         if (user != null) {
-            log.info("user:[uid:{},nickname:{}]获取了小说[{}]的片段[{}]信息", user.getUid(), user.getNickname(), articleId, sliceId);
+            log.info("user:[uid:{},nickname:{}]获取了小说[{}]的片段[{}]信息", user.getUid(), user.getNickname(), fictionId, sliceId);
         } else {
-            log.info("未登录用户获取了小说[{}]的片段[{}]信息", articleId, sliceId);
+            log.info("未登录用户获取了小说[{}]的片段[{}]信息", fictionId, sliceId);
         }
-        Content content = fictionService.findContent(sliceId);
-        return ResponseEntity.ok(content);
+        Slice slice = fictionService.findContent(sliceId);
+        return ResponseEntity.ok(slice);
     }
 
-    @PostMapping("/articles/${articleId}")
-    public ResponseEntity addSlice(@RequestBody SliceForm sliceForm, @RequestAttribute("user") User user, @PathVariable("articleId") Integer articleId) {
-        log.info("user:[uid:{},nickname:{}]对article:[{}]添加了一个片段", user.getUid(), user.getNickname(), articleId);
-        Slice slice = new Slice(articleId, sliceForm, user);
-        fictionService.addSlice(slice);
+    @PostMapping("/addFiction")
+    public ResponseEntity addFiction(@RequestBody FictionForm fictionForm, @RequestAttribute("user") User user) {
+        log.info("user:[uid:{},nickname:{}]添加了fiction:[{}]", user.getUid(), user.getNickname(), fictionForm.getName());
+        Fiction fiction = new Fiction(fictionForm, user);
+
+        fictionService.addFiction(fiction, fictionForm.getContent());
         return ResponseEntity.ok();
     }
 
-    @PostMapping("/fiction")
-    public ResponseEntity addArticle(@RequestBody FictionForm fictionForm, @RequestAttribute("user") User user) {
-        log.info("user:[uid:{},nickname:{}]添加了article:[{}]", user.getUid(), user.getNickname(), fictionForm.getName());
-        Fiction fiction = new Fiction(fictionForm, user);
-        Slice slice = new Slice(fictionForm, user);
-        fictionService.addArticle(fiction, slice);
+    @PostMapping("/addSlice")
+    public ResponseEntity addSlice(@RequestBody SliceForm sliceForm, @RequestAttribute("user") User user) {
+        log.info("user:[uid:{},nickname:{}]对fiction:[{}]添加了一个片段", user.getUid(), user.getNickname(), sliceForm.getFictionId());
+        fictionService.addSlice(sliceForm, user.getUid());
         return ResponseEntity.ok();
     }
 

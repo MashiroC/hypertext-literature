@@ -10,10 +10,18 @@ import lombok.Data;
 @Data
 public class SliceRefPO {
     private Integer id;
-    private String title;
+    private String choose;
     private Integer authorId;
-    private Integer contentId;
-    private Integer prefixId;
-    private Integer suffixId;
+    private Integer fromId;
+    private Integer toId;
+    private Integer fictionId;
     private Integer state;
+
+    public SliceRefPO(){}
+
+    public SliceRefPO(String choose,Integer authorId,Integer fictionId){
+        this.choose=choose;
+        this.authorId=authorId;
+        this.fictionId=fictionId;
+    }
 }

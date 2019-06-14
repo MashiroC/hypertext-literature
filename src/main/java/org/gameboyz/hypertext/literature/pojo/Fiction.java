@@ -17,6 +17,7 @@ public class Fiction {
     private String name;
     private Integer authorId;
     private String author;
+    private Integer prologurId;
 
     public Fiction() {
     }
@@ -26,6 +27,7 @@ public class Fiction {
         this.name = fictionPO.getName();
         this.authorId = userPO.getId();
         this.author = userPO.getUsername();
+        this.prologurId=fictionPO.getPrologueId();
     }
 
     public Fiction(FictionForm fictionForm, User user) {

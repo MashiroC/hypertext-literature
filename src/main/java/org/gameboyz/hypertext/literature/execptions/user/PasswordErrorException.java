@@ -9,11 +9,11 @@ import org.gameboyz.hypertext.literature.execptions.BaseException;
  * @description:
  */
 @Getter
-public class UserPasswordErrorException extends BaseException {
+public class PasswordErrorException extends BaseException {
     public static final int PASSWORD_ERROR_CODE=10101;
     public static final String PASSWORD_ERROR_MESSAGE="password error";
 
-    public UserPasswordErrorException() {
+    public PasswordErrorException() {
         super(PASSWORD_ERROR_CODE,PASSWORD_ERROR_MESSAGE);
     }
 }

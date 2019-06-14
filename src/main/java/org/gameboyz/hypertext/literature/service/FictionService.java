@@ -1,9 +1,10 @@
 package org.gameboyz.hypertext.literature.service;
 
 import org.gameboyz.hypertext.literature.execptions.fiction.SliceNotFoundException;
-import org.gameboyz.hypertext.literature.pojo.Content;
-import org.gameboyz.hypertext.literature.pojo.Fiction;
 import org.gameboyz.hypertext.literature.pojo.Slice;
+import org.gameboyz.hypertext.literature.pojo.Fiction;
+import org.gameboyz.hypertext.literature.pojo.Edge;
+import org.gameboyz.hypertext.literature.pojo.form.SliceForm;
 
 import java.util.Set;
 
@@ -16,12 +17,11 @@ public interface FictionService {
 
     Set<Fiction> getAllFictions();
 
-    Set<Slice> getFictionSlice(Integer fictionId);
+    Set<Edge> getFictionSlice(Integer fictionId);
 
-    Content findContent(Integer sliceId) throws SliceNotFoundException;
+    Slice findContent(Integer sliceId) throws SliceNotFoundException;
 
-    void addSlice(Slice slice);
+    void addFiction(Fiction fiction, String edge);
 
-    void addArticle(Fiction fiction, Slice slice);
-
+    void addSlice(SliceForm sliceForm, Integer uid);
 }
